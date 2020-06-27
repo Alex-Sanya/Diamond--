@@ -2,7 +2,7 @@
 #define _PREPARATION_H
 
 #define _CRT_SECURE_NO_WARNINGS
-#include "declarartions.h"
+#include "declarations.h"
 #include "is_something.h"
 #include "utilits.h"
 #include <stdio.h>

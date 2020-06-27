@@ -1,7 +1,7 @@
 #ifndef _MOVING_H
 #define _MOVING_H
 
-#include "declarartions.h"
+#include "declarations.h"
 #include "is_something.h"
 #include "stones_and_diamonds.h"
 

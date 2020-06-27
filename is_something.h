@@ -1,7 +1,7 @@
 #ifndef _IS_SOMETHING_H
 #define _IS_SOMETHING_H
 
-#include "declarartions.h"
+#include "declarations.h"
 
 // принадлежит ли клетка карте
 int is_on_map(s_map *map, int X, int Y);

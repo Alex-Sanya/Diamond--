@@ -14,7 +14,7 @@
 #define INCORRECT_VALUE 3
 // дополнительно:
 #define COUNT_ALL_COLORS 6
-#define COUNT_TXT_NAME 3
+#define COUNT_TXT_NAME 4
 #define MAX_TXT_NAME 66
 #define MAX_STR_LENGHT 21
 #define SCREEN_REFRESH_RATE 250
@@ -102,7 +102,7 @@ typedef struct _s_enemy
 	char ch; // символ врга
 	unsigned short	color; // цвет врага
 	direction d; // изначальное направление
-	struct _enemy *next, *prev; // указатели на следуюющего и предыдущего
+	struct _s_enemy *next, *prev; // указатели на следуюющего и предыдущего
 } s_enemy;
 // структура камня
 typedef struct _s_stone
@@ -143,6 +143,7 @@ typedef struct _s_txt_name
 	char all_colors[MAX_TXT_NAME];
 	char map[MAX_TXT_NAME];
 	char player[MAX_TXT_NAME];
+	char enemy[MAX_TXT_NAME];
 } s_txt_name;
 
 
