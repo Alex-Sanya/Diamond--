@@ -2,12 +2,14 @@
 #define _UTILITS_H
 
 #include "declarations.h"
+#include "enemys.h"
 #include "moving.h"
+#include "print.h"
 #include <stdio.h>
 #include <conio.h>
 #include <Windows.h>
 
-// вывод сообщени€ по коду ошибки. всега возвращает 0
+// вывод сообщени€ по коду ошибки. всегда возвращает 0
 int err(int type);
 
 // перевод символов карты из типа ввода в тип вывода
@@ -35,13 +37,16 @@ int special_bottom(char *bottom);
 int copy_map(s_map *map1, s_map *map2);
 
 // сохранитьс€ на чекпоинте
-int save_on_checkpoint(s_map *map, s_player *player, s_q_stone *q_stone, s_map *save_map, s_player *save_player, s_q_stone *save_q_stone);
+int save_on_checkpoint(s_map* map, s_player* player, s_q_stone* q_stone, s_enemy** first_enemy,
+	s_map* save_map, s_player* save_player, s_q_stone* save_q_stone, s_enemy** save_first_enemy);
 
 // перейти по сохранению и уменьшить player->lifes на 1
-int go_to_checkpoint(s_map *map, s_player *player, s_q_stone *q_stone, s_map *save_map, s_player *save_player, s_q_stone *save_q_stone);
+int go_to_checkpoint(s_map* map, s_player* player, s_q_stone* q_stone, s_enemy** first_enemy,
+	s_map* save_map, s_player* save_player, s_q_stone* save_q_stone, s_enemy** save_first_enemy);
 
 // выполнить команду по нажатой клавише
-void command(char bottom, s_map *map, s_player *player, s_q_stone *q_stone, s_map *save_map, s_player *save_player, s_q_stone *save_q_stone);
+void command_in_game(char bottom, s_map* map, s_player* player, s_q_stone* q_stone, s_enemy** first_enemy,
+			s_map* save_map, s_player* save_player, s_q_stone* save_q_stone, s_enemy** save_first_enemy);
 
 // создание s_cell - матрицы размерами m на n
 int create_s_cell_matrix(s_cell ***matrix, int m, int n);
@@ -53,6 +58,11 @@ void screen_position(COORD *screen_pos, s_player *player, s_map *map);
 int free_s_cell_matrix(s_cell ***matrix, int size_of_strings);
 
 // очистить всю пам€ть, что занимали
-int free_all(s_map *map, s_map *save_map, s_q_stone *q_stone, s_q_stone *save_q_stone);
+int free_all(s_map *map, s_map *save_map, s_q_stone *q_stone, s_q_stone *save_q_stone,
+	s_enemy** first_enemy, s_enemy** save_first_enemy);
+
+// начать новую игру - в файл записать значение текущего уровн€ = 1
+// вернЄт 0, если файл не найден
+int new_user();
 
 #endif //_UTILITS_H

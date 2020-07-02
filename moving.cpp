@@ -128,3 +128,83 @@ int move_down(s_map *map, s_player *player)
 	map->matr[player->pos.Y][player->pos.X].pl = player;
 	return 1;
 }
+
+// движение врага вправо
+int move_enemy_right(s_map* map, s_enemy* enemy)
+{
+	if (is_grass(map, enemy->pos.X + 1, enemy->pos.Y) && !is_enemy(map, enemy->pos.X + 1, enemy->pos.Y) && is_on_map(map, enemy->pos.X+1, enemy->pos.Y))
+	{
+		map->matr[enemy->pos.Y][enemy->pos.X].en = NULL;
+		enemy->pos.X++;
+		map->matr[enemy->pos.Y][enemy->pos.X].en = enemy;
+		return 1;
+	}
+	enemy->d = left;
+	return 0;
+}
+
+// движение врага влево
+int move_enemy_left(s_map* map, s_enemy* enemy)
+{
+	if (is_grass(map, enemy->pos.X-1, enemy->pos.Y ) && !is_enemy(map, enemy->pos.X-1, enemy->pos.Y) && is_on_map(map, enemy->pos.X-1, enemy->pos.Y))
+	{
+		map->matr[enemy->pos.Y][enemy->pos.X].en = NULL;
+		enemy->pos.X--;
+		map->matr[enemy->pos.Y][enemy->pos.X].en = enemy;
+		return 1;
+	}
+	enemy->d = right;
+	return 0;
+}
+
+// движение врага вверх
+int move_enemy_up(s_map* map, s_enemy* enemy)
+{
+	if (is_grass(map, enemy->pos.X, enemy->pos.Y - 1) && !is_enemy(map, enemy->pos.X, enemy->pos.Y - 1) && is_on_map(map, enemy->pos.X, enemy->pos.Y - 1))
+	{
+		map->matr[enemy->pos.Y][enemy->pos.X].en = NULL;
+		enemy->pos.Y--;
+		map->matr[enemy->pos.Y][enemy->pos.X].en = enemy;
+		return 1;
+	}
+	enemy->d = down;
+	return 0;
+}
+
+// движение врага вниз
+int move_enemy_down(s_map* map, s_enemy* enemy)
+{
+	if (is_grass(map, enemy->pos.X, enemy->pos.Y + 1) && !is_enemy(map, enemy->pos.X, enemy->pos.Y + 1) && is_on_map(map, enemy->pos.X, enemy->pos.Y + 1))
+	{
+		map->matr[enemy->pos.Y][enemy->pos.X].en = NULL;
+		enemy->pos.Y++;
+		map->matr[enemy->pos.Y][enemy->pos.X].en = enemy;
+		return 1;
+	}
+	enemy->d = up;
+	return 0;
+}
+
+// движение врагов
+int move_every_enemy(s_map* map, s_enemy** first_enemy)
+{
+	for (s_enemy* cur = *first_enemy; cur!=NULL; cur=cur->next)
+	{
+		switch (cur->d)
+		{
+		case right:
+			move_enemy_right(map, cur);
+			break;
+		case left:
+			move_enemy_left(map, cur);
+			break;
+		case up:
+			move_enemy_up(map, cur);
+			break;
+		case down:
+			move_enemy_down(map, cur);
+			break;
+		}
+	}
+	return 1;
+}

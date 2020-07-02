@@ -15,14 +15,18 @@
 // дополнительно:
 #define COUNT_ALL_COLORS 6
 #define COUNT_TXT_NAME 4
+#define COUNT_MENU_COMMANDS 4
 #define MAX_TXT_NAME 66
 #define MAX_STR_LENGHT 21
+#define MAX_LEVEL 6
 #define SCREEN_REFRESH_RATE 250
+#define USER_NAME "user.txt"
 #define BORDER_SIZE 1
 #define BORDER_CHAR '+'
 // коды спец. кнопок
 #define ESC 27
 #define DEL 83 // -32 83
+#define ENTER 13
 // макросы
 #define MAX(x,y) (x)>(y) ? (x) : (y)
 #define MIN(x,y) (x)<(y) ? (x) : (y)
@@ -98,11 +102,11 @@ typedef struct _s_player
 // структура врага
 typedef struct _s_enemy
 {
-	COORD pos;
 	char ch; // символ врга
 	unsigned short	color; // цвет врага
 	direction d; // изначальное направление
-	struct _s_enemy *next, *prev; // указатели на следуюющего и предыдущего
+	COORD pos;
+	struct _s_enemy *next; // указатели на следуюющего и предыдущего
 } s_enemy;
 // структура камня
 typedef struct _s_stone
@@ -145,6 +149,13 @@ typedef struct _s_txt_name
 	char player[MAX_TXT_NAME];
 	char enemy[MAX_TXT_NAME];
 } s_txt_name;
-
+// команды меню
+enum commands
+{
+	continue_game = 0,
+	new_game = 1,
+	choose_level = 2,
+	exit_game = 3
+};
 
 #endif //_DECLARATIONS_H

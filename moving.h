@@ -32,4 +32,19 @@ int move_up(s_map *map, s_player *player);
 // передвинуть игрока вниз
 int move_down(s_map *map, s_player *player);
 
+// движение врага вправо
+int move_enemy_right(s_map* map, s_enemy* enemy);
+
+// движение врага влево
+int move_enemy_left(s_map* map, s_enemy* enemy);
+
+// движение врага вверх
+int move_enemy_up(s_map* map, s_enemy* enemy);
+
+// движение врага вниз
+int move_enemy_down(s_map* map, s_enemy* enemy);
+
+// движение врагов
+int move_every_enemy(s_map* map, s_enemy** first_enemy);
+
 #endif //_MOVING_H

@@ -12,6 +12,9 @@ int is_grass(s_map *map, int X, int Y);
 // клетка - камень
 int is_stone(s_map *map, int X, int Y);
 
+// клетка - камень
+int is_diamond(s_map* map, int X, int Y);
+
 // клетка - кусты
 int is_bush(s_map *map, int X, int Y);
 
@@ -23,5 +26,11 @@ int is_exit(s_map *map, int X, int Y);
 
 // клетка - сохранение
 int is_checkpoint(s_map *map, int X, int Y);
+
+// на клетке - игрок
+int is_player(s_map* map, int X, int Y);
+
+// на клетке - враг
+int is_enemy(s_map* map, int X, int Y);
 
 #endif //_IS_SOMETHING_H

@@ -1,6 +1,6 @@
 #include "utilits.h"
 
-// вывод сообщения по коду ошибки. всега возвращает 0
+// вывод сообщения по коду ошибки. всегда возвращает 0
 int err(int type)
 {
 	switch(type)
@@ -179,30 +179,39 @@ int copy_map(s_map *map1, s_map *map2)
 }
 
 // сохраниться на чекпоинте
-int save_on_checkpoint(s_map *map, s_player *player, s_q_stone *q_stone, s_map *save_map, s_player *save_player, s_q_stone *save_q_stone)
+int save_on_checkpoint(s_map* map, s_player* player, s_q_stone* q_stone, s_enemy** first_enemy,
+					s_map* save_map, s_player* save_player, s_q_stone* save_q_stone, s_enemy** save_first_enemy)
 {
 	copy_map(map, save_map);
 	*save_player = *player;
 	q_stone_clear(save_q_stone); // очищаем старые значения
 	if(!copy_q_stone(q_stone, save_q_stone))
 		return 0;
+	delete_all_enemys(save_first_enemy);
+	if (!copy_enemys(first_enemy, save_first_enemy))
+		return 0;
 	return 1;
 }
 
 // перейти по сохранению и уменьшить player->lives на 1
-int go_to_checkpoint(s_map *map, s_player *player, s_q_stone *q_stone, s_map *save_map, s_player *save_player, s_q_stone *save_q_stone)
+int go_to_checkpoint(s_map *map, s_player *player, s_q_stone *q_stone, s_enemy **first_enemy,
+					s_map *save_map, s_player *save_player, s_q_stone *save_q_stone, s_enemy **save_first_enemy)
 {
 	copy_map(save_map, map);
 	*player = *save_player;
 	q_stone_clear(q_stone); // очищаем старые значения
 	if(!copy_q_stone(save_q_stone, q_stone))
 		return 0;
+	delete_all_enemys(first_enemy);
+	if (!copy_enemys(save_first_enemy, first_enemy))
+		return 0;
 	player->lives--;
 	return 1;
 }
 
 // выполнить команду по нажатой клавише
-void command(char bottom, s_map *map, s_player *player, s_q_stone *q_stone,  s_map *save_map, s_player *save_player, s_q_stone *save_q_stone)
+void command_in_game(char bottom, s_map* map, s_player* player, s_q_stone* q_stone, s_enemy** first_enemy,
+			s_map* save_map, s_player* save_player, s_q_stone* save_q_stone, s_enemy** save_first_enemy)
 {
 	switch(bottom)
 	{
@@ -219,7 +228,8 @@ void command(char bottom, s_map *map, s_player *player, s_q_stone *q_stone,  s_m
 		move_left(map, player, q_stone);
 		return;
 	case DEL:
-		go_to_checkpoint(map, player, q_stone, save_map, save_player, save_q_stone);
+		go_to_checkpoint(map, player, q_stone, first_enemy,
+						save_map, save_player, save_q_stone, save_first_enemy);
 		return;
 	default: return;
 	}
@@ -267,12 +277,14 @@ int free_s_cell_matrix(s_cell ***matrix, int size_of_strings)
 	return 0;
 }
 
-
 // очистить всю память, что занимали. возвращает 0
-int free_all(s_map *map, s_map *save_map, s_q_stone *q_stone, s_q_stone *save_q_stone)
+int free_all(s_map *map, s_map *save_map, s_q_stone *q_stone, s_q_stone *save_q_stone,
+	s_enemy** first_enemy, s_enemy** save_first_enemy)
 {
 	q_stone_clear(q_stone);
 	q_stone_clear(save_q_stone);
+	delete_all_enemys(first_enemy);
+	delete_all_enemys(save_first_enemy);
 	if(map->characters)
 		free(map->characters);
 	if(map->colors)
@@ -283,3 +295,17 @@ int free_all(s_map *map, s_map *save_map, s_q_stone *q_stone, s_q_stone *save_q_
 		free_s_cell_matrix(&save_map->matr, save_map->size.Y);
 	return 0;
 }
+
+// начать новую игру - в файл записать значение текущего уровня = 1
+// вернёт 0, если файл не найден
+int new_user()
+{
+	FILE *fuser = fopen(USER_NAME, "w");
+	if(!fuser)
+		return err(FILE_NOT_FOUND);
+	fprintf(fuser, "1\n");
+	fclose(fuser);
+	return 1;
+}
+
+
