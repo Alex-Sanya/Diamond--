@@ -25,8 +25,23 @@ int print_enemy(s_map* map, int X, int Y)
 {
 	if (map->matr[Y][X].en)
 	{
-		printf("%c", map->matr[Y][X].en->ch);
-		return 1;
+		switch(map->matr[Y][X].en->d)
+		{
+		case up:
+			printf("%c", 24);
+			return 1;
+		case down:
+			printf("%c", 25);
+			return 1;
+		case left:
+			printf("%c", 27);
+			return 1;
+		case right:
+			printf("%c", 26);
+			return 1;
+		default:
+			return 0;
+		}
 	}
 	return 0;
 }
