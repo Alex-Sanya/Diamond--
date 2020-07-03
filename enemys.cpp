@@ -98,6 +98,8 @@ int delete_enemy(s_enemy* enemy, s_enemy** first_enemy)
 //удаление всех врагов. всегда возвращает ноль
 int delete_all_enemys(s_enemy** first_enemy)
 {
+	if(!first_enemy)
+		return 0;
 	while (*first_enemy!=NULL)
 		delete_enemy(*first_enemy, first_enemy);
 	return 0;
@@ -107,17 +109,24 @@ int delete_all_enemys(s_enemy** first_enemy)
 int death_enemy(s_enemy* enemy, s_enemy** first_enemy, s_map* map)
 {
 	// если камень или кристалл упадет направо
-	if ((((is_stone(map, enemy->pos.X - 1, enemy->pos.Y) || is_diamond(map, enemy->pos.X - 1, enemy->pos.Y)) &&
-		(is_stone(map, enemy->pos.X - 1, enemy->pos.Y - 1) || is_diamond(map, enemy->pos.X - 1, enemy->pos.Y - 1))) &&
-		(!is_grass(map, enemy->pos.X - 2, enemy->pos.Y) || !is_grass(map, enemy->pos.X - 2, enemy->pos.Y - 1) ||
-			is_player(map, enemy->pos.X - 2, enemy->pos.Y)) || is_player(map, enemy->pos.X - 2, enemy->pos.Y - 1)) &&
+	if (
+		(
+			((is_stone(map, enemy->pos.X - 1, enemy->pos.Y) || is_diamond(map, enemy->pos.X - 1, enemy->pos.Y)) &&
+			(is_stone(map, enemy->pos.X - 1, enemy->pos.Y - 1) || is_diamond(map, enemy->pos.X - 1, enemy->pos.Y - 1)))
+		&&
+			(!is_grass(map, enemy->pos.X - 2, enemy->pos.Y) || !is_grass(map, enemy->pos.X - 2, enemy->pos.Y - 1) ||
+				is_player(map, enemy->pos.X - 2, enemy->pos.Y)
+
+				|| is_player(map, enemy->pos.X - 2, enemy->pos.Y - 1))
+		)
+			&&
 		 (is_grass(map, enemy->pos.X, enemy->pos.Y-1) && !is_player(map, enemy->pos.X, enemy->pos.Y-1) && !is_enemy(map, enemy->pos.X, enemy->pos.Y - 1)))
 	{
 		map->matr[enemy->pos.Y][enemy->pos.X].en = NULL;
 		delete_enemy(enemy, first_enemy);
 		return 1;
 	}
-	if (is_stone(map, enemy->pos.X, enemy->pos.Y+1))
+	if (is_stone(map, enemy->pos.X, enemy->pos.Y-1)||is_diamond(map, enemy->pos.X, enemy->pos.Y-1))
 	{
 		map->matr[enemy->pos.Y][enemy->pos.X].en = NULL;
 		delete_enemy(enemy, first_enemy);
